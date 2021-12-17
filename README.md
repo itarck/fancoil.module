@@ -1,2 +1,3 @@
-# fancoil-module
-modules for fancoil framework.
+# fancoil.module
+
+Modules for fancoil framework.

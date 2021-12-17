@@ -1,0 +1,9 @@
+;; shadow-cljs configuration
+{:deps true
+
+ :builds {:ds {:target     :npm-module
+               :output-dir "public/js"
+               :entries [fancoil.module.datascript.unit]}
+          :posh {:target     :npm-module
+                 :output-dir "public/js"
+                 :entries [fancoil.module.posh.unit]}}}
