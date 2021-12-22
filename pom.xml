@@ -3,7 +3,7 @@
   <groupId>com.github.itarck</groupId>
   <artifactId>fancoil.module</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <name>fancoil.module</name>
   <description>Modules for fancoil framework </description>
   <url>https://github.com/itarck/fancoil.module</url>
@@ -17,7 +17,7 @@
     <url>https://github.com/itarck/fancoil.module</url>
     <connection>scm:git:git://github.com/itarck/fancoil.module.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/itarck/fancoil.module.git</developerConnection>
-    <tag>124202aaccc44b8ce91160509ee1ead189d2196c</tag>
+    <tag>068768147a489907a3ae4210f7e9ff488e0b780b</tag>
   </scm>
   <build>
     <sourceDirectory>src/main</sourceDirectory>

@@ -1,4 +1,4 @@
-(defproject com.github.itarck/fancoil.module "0.0.2-SNAPSHOT"
+(defproject com.github.itarck/fancoil.module "0.0.3-SNAPSHOT"
   :description "Modules for fancoil framework "
   :url "https://github.com/itarck/fancoil.module"
   :license {:name "MIT License"
