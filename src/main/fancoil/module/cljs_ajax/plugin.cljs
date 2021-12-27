@@ -13,73 +13,63 @@
    :response-format (json-response-format {:keywords? true})})
 
 
-(defn make-on-success-handler [core on-success-keyword]
+(defn make-handler [core dispatch-keyword]
   (fn [response]
-    (let [req #:request {:method on-success-keyword
+    (let [req #:request {:method dispatch-keyword
                          :event response}]
       (base/do! core :dispatch/request req))))
+
 
 ;; base functions
 
 (defmethod base/do! :ajax/request
   [core _ effect]
   (go
-    (let [{:keys [request on-success]} effect
-          on-success-fn (if (fn? on-success)
-                          on-success
-                          (fn [[ok response]]
-                            (if ok
-                              (let [req #:request {:method on-success
-                                                   :event response}]
-                                (base/do! core :dispatch/request req))
-                              (js/console.error (str response)))))
+    (let [{:keys [request on-success on-failure] :or {on-failure #(js/console.error %)}} effect
+          on-success-handler (cond
+                               (fn? on-success) on-success
+                               (keyword? on-success) (make-handler core on-success)
+                               (nil? on-success) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
+                               :else (js/console.error "on-success should be a keyword"))
+          on-failure-handler (cond
+                               (fn? on-failure) on-failure
+                               (keyword? on-failure) (make-handler core on-failure)
+                               (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
+                               :else (js/console.error "on-failure should be a keyword"))
+          handler (fn [[ok response]]
+                    (if ok
+                      (on-success-handler response)
+                      (on-failure-handler response)))
           merged-request (->
                           (merge default-request request)
-                          (assoc :handler on-success-fn))]
+                          (assoc :handler handler))]
       (ajax-request merged-request))))
 
 
-(defmethod base/do! :ajax/get
-  [core _ effect]
+(derive :ajax/get :ajax/easy-request)
+(derive :ajax/post :ajax/easy-request)
+(derive :ajax/put :ajax/easy-request)
+(derive :ajax/delete :ajax/easy-request)
+
+(defmethod base/do! :ajax/easy-request
+  [core method effect]
   (go
-    (let [{:keys [uri opt on-success] :or {opt {}}} effect
-          on-success-handler (if (fn? on-success)
-                             on-success
-                             (make-on-success-handler core on-success))
-          opt (assoc opt :handler on-success-handler)]
-      (GET uri opt))))
-
-(defmethod base/do! :ajax/post
-  [core _ effect]
-  (go
-    (let [{:keys [uri opt on-success] :or {opt {}}} effect
-          on-success-handler (if (fn? on-success)
-                             on-success
-                             (make-on-success-handler core on-success))
-          opt (assoc opt :handler on-success-handler)]
-      (POST uri opt))))
-
-(defmethod base/do! :ajax/put
-  [core _ effect]
-  (go
-    (let [{:keys [uri opt on-success] :or {opt {}}} effect
-          on-success-handler (if (fn? on-success)
-                             on-success
-                             (make-on-success-handler core on-success))
-          opt (assoc opt :handler on-success-handler)]
-      (PUT uri opt))))
-
-
-(defmethod base/do! :ajax/delete
-  [core _ effect]
-  (go
-    (let [{:keys [uri opt on-success] :or {opt {}}} effect
-          on-success-handler (if (fn? on-success)
-                             on-success
-                             (make-on-success-handler core on-success))
-          opt (assoc opt :handler on-success-handler)]
-      (DELETE uri opt))))
-
-
-
-
+    (let [{:keys [uri opt on-success on-failure] :or {opt {} on-failure #(js/console.error %)}} effect
+          on-success-handler (cond
+                               (fn? on-success) on-success
+                               (keyword? on-success) (make-handler core on-success)
+                               (nil? on-success) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
+                               :else (js/console.error "on-success should be a keyword"))
+          on-failure-handler (cond
+                               (fn? on-failure) on-failure
+                               (keyword? on-failure) (make-handler core on-failure)
+                               (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
+                               :else (js/console.error "on-failure should be a keyword"))
+          opt (assoc opt
+                     :handler on-success-handler
+                     :error-handler on-failure-handler)]
+      (case method
+        :ajax/get (GET uri opt)
+        :ajax/post (POST uri opt)
+        :ajax/put (PUT uri opt)
+        :ajax/delete (DELETE uri opt)))))
