@@ -13,9 +13,9 @@
    :response-format (json-response-format {:keywords? true})})
 
 
-(defn make-callback-fn [core callback-keyword]
+(defn make-on-success-handler [core on-success-keyword]
   (fn [response]
-    (let [req #:request {:method callback-keyword
+    (let [req #:request {:method on-success-keyword
                          :event response}]
       (base/do! core :dispatch/request req))))
 
@@ -24,60 +24,60 @@
 (defmethod base/do! :ajax/request
   [core _ effect]
   (go
-    (let [{:keys [request callback]} effect
-          callback-fn (if (fn? callback)
-                        callback
-                        (fn [[ok response]]
-                          (if ok
-                            (let [req #:request {:method callback
-                                                 :event response}]
-                              (base/do! core :dispatch/request req))
-                            (js/console.error (str response)))))
+    (let [{:keys [request on-success]} effect
+          on-success-fn (if (fn? on-success)
+                          on-success
+                          (fn [[ok response]]
+                            (if ok
+                              (let [req #:request {:method on-success
+                                                   :event response}]
+                                (base/do! core :dispatch/request req))
+                              (js/console.error (str response)))))
           merged-request (->
                           (merge default-request request)
-                          (assoc :handler callback-fn))]
+                          (assoc :handler on-success-fn))]
       (ajax-request merged-request))))
 
 
 (defmethod base/do! :ajax/get
   [core _ effect]
   (go
-    (let [{:keys [uri opt callback] :or {opt {}}} effect
-          callback-handler (if (fn? callback)
-                             callback
-                             (make-callback-fn core callback))
-          opt (assoc opt :handler callback-handler)]
+    (let [{:keys [uri opt on-success] :or {opt {}}} effect
+          on-success-handler (if (fn? on-success)
+                             on-success
+                             (make-on-success-handler core on-success))
+          opt (assoc opt :handler on-success-handler)]
       (GET uri opt))))
 
 (defmethod base/do! :ajax/post
   [core _ effect]
   (go
-    (let [{:keys [uri opt callback] :or {opt {}}} effect
-          callback-handler (if (fn? callback)
-                             callback
-                             (make-callback-fn core callback))
-          opt (assoc opt :handler callback-handler)]
+    (let [{:keys [uri opt on-success] :or {opt {}}} effect
+          on-success-handler (if (fn? on-success)
+                             on-success
+                             (make-on-success-handler core on-success))
+          opt (assoc opt :handler on-success-handler)]
       (POST uri opt))))
 
 (defmethod base/do! :ajax/put
   [core _ effect]
   (go
-    (let [{:keys [uri opt callback] :or {opt {}}} effect
-          callback-handler (if (fn? callback)
-                             callback
-                             (make-callback-fn core callback))
-          opt (assoc opt :handler callback-handler)]
+    (let [{:keys [uri opt on-success] :or {opt {}}} effect
+          on-success-handler (if (fn? on-success)
+                             on-success
+                             (make-on-success-handler core on-success))
+          opt (assoc opt :handler on-success-handler)]
       (PUT uri opt))))
 
 
 (defmethod base/do! :ajax/delete
   [core _ effect]
   (go
-    (let [{:keys [uri opt callback] :or {opt {}}} effect
-          callback-handler (if (fn? callback)
-                             callback
-                             (make-callback-fn core callback))
-          opt (assoc opt :handler callback-handler)]
+    (let [{:keys [uri opt on-success] :or {opt {}}} effect
+          on-success-handler (if (fn? on-success)
+                             on-success
+                             (make-on-success-handler core on-success))
+          opt (assoc opt :handler on-success-handler)]
       (DELETE uri opt))))
 
 
