@@ -13,12 +13,16 @@
    :response-format (json-response-format {:keywords? true})})
 
 
-(defn make-handler [core dispatch-keyword]
+(defn make-handler-from-keyword [core dispatch-keyword]
   (fn [response]
     (let [req #:request {:method dispatch-keyword
                          :event response}]
       (base/do! core :dispatch/request req))))
 
+(defn make-handler-from-request [core request]
+  (fn [response]
+    (let [req (assoc request :request/event response)]
+      (base/do! core :dispatch/request req))))
 
 ;; base functions
 
@@ -28,12 +32,14 @@
     (let [{:keys [request on-success on-failure] :or {on-failure #(js/console.error %)}} effect
           on-success-handler (cond
                                (fn? on-success) on-success
-                               (keyword? on-success) (make-handler core on-success)
+                               (keyword? on-success) (make-handler-from-keyword core on-success)
+                               (map? on-success) (make-handler-from-request core on-success)
                                (nil? on-success) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-success should be a keyword"))
           on-failure-handler (cond
                                (fn? on-failure) on-failure
-                               (keyword? on-failure) (make-handler core on-failure)
+                               (keyword? on-failure) (make-handler-from-keyword core on-failure)
+                               (map? on-failure) (make-handler-from-request core on-failure)
                                (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-failure should be a keyword"))
           handler (fn [[ok response]]
@@ -57,12 +63,14 @@
     (let [{:keys [uri opt on-success on-failure] :or {opt {} on-failure #(js/console.error %)}} effect
           on-success-handler (cond
                                (fn? on-success) on-success
-                               (keyword? on-success) (make-handler core on-success)
+                               (keyword? on-success) (make-handler-from-keyword core on-success)
+                               (map? on-success) (make-handler-from-request core on-success)
                                (nil? on-success) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-success should be a keyword"))
           on-failure-handler (cond
                                (fn? on-failure) on-failure
-                               (keyword? on-failure) (make-handler core on-failure)
+                               (keyword? on-failure) (make-handler-from-keyword core on-failure)
+                               (map? on-failure) (make-handler-from-request core on-failure)
                                (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-failure should be a keyword"))
           opt (assoc opt
