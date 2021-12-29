@@ -15,13 +15,13 @@
 
 (defn make-handler-from-keyword [core dispatch-keyword]
   (fn [response]
-    (let [req #:request {:method dispatch-keyword
-                         :event response}]
+    (let [req {:request/method dispatch-keyword
+               :ajax/response response}]
       (base/do! core :dispatch/request req))))
 
 (defn make-handler-from-request [core request]
   (fn [response]
-    (let [req (assoc request :request/event response)]
+    (let [req (assoc request :ajax/response response)]
       (base/do! core :dispatch/request req))))
 
 ;; base functions
