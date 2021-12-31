@@ -24,6 +24,16 @@
     (let [req (assoc request :ajax/response response)]
       (base/do! core :dispatch/request req))))
 
+(defn make-handler-from-requests [core requests]
+  (fn [response]
+    (let [ajax-resp-injected-requests (mapv (fn [req]
+                                              (if (keyword? req)
+                                                {:request/method req
+                                                 :ajax/response response}
+                                                (assoc req :ajax/response response)))
+                                            requests)]
+      (base/do! core :dispatch/requests ajax-resp-injected-requests))))
+
 ;; base functions
 
 (defmethod base/do! :ajax/request
@@ -34,12 +44,14 @@
                                (fn? on-success) on-success
                                (keyword? on-success) (make-handler-from-keyword core on-success)
                                (map? on-success) (make-handler-from-request core on-success)
+                               (vector? on-success) (make-handler-from-requests core on-success)
                                (nil? on-success) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-success should be a keyword"))
           on-failure-handler (cond
                                (fn? on-failure) on-failure
                                (keyword? on-failure) (make-handler-from-keyword core on-failure)
                                (map? on-failure) (make-handler-from-request core on-failure)
+                               (vector? on-failure) (make-handler-from-requests core on-failure)
                                (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-failure should be a keyword"))
           handler (fn [[ok response]]
@@ -65,12 +77,14 @@
                                (fn? on-success) on-success
                                (keyword? on-success) (make-handler-from-keyword core on-success)
                                (map? on-success) (make-handler-from-request core on-success)
+                               (vector? on-success) (make-handler-from-requests core on-success)
                                (nil? on-success) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-success should be a keyword"))
           on-failure-handler (cond
                                (fn? on-failure) on-failure
                                (keyword? on-failure) (make-handler-from-keyword core on-failure)
                                (map? on-failure) (make-handler-from-request core on-failure)
+                               (vector? on-failure) (make-handler-from-requests core on-failure)
                                (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-failure should be a keyword"))
           opt (assoc opt
