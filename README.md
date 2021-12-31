@@ -6,9 +6,12 @@ Modules for fancoil framework. Modules will be changed more than the framework, 
 
 - fancoil.module.datascript：[datascript],  an alternative to ratom
 - fancoil.module.posh：poshed datascript，you can use [posh] in subscribe
+- fancoil.module.cljs-ajax: a wrap for [cljs-ajax], add it as plugin for fancoil unit do!
+- fancoil.module.reitit.html-router: a frontend router module
 
 [posh]:https://github.com/denistakeda/posh
 [datascript]:https://github.com/tonsky/datascript
+[cljs-ajax]:https://github.com/JulianBirch/cljs-ajax
 
 ## Installation
 
