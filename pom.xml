@@ -3,7 +3,7 @@
   <groupId>com.github.itarck</groupId>
   <artifactId>fancoil.module</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.5-SNAPSHOT</version>
   <name>fancoil.module</name>
   <description>Modules for fancoil framework </description>
   <url>https://github.com/itarck/fancoil.module</url>
@@ -17,7 +17,7 @@
     <url>https://github.com/itarck/fancoil.module</url>
     <connection>scm:git:git://github.com/itarck/fancoil.module.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/itarck/fancoil.module.git</developerConnection>
-    <tag>068768147a489907a3ae4210f7e9ff488e0b780b</tag>
+    <tag>da90971e1f31381bc58cf49122ccfd49b5d17a41</tag>
   </scm>
   <build>
     <sourceDirectory>src/main</sourceDirectory>
@@ -93,9 +93,34 @@
       <version>1.1.0</version>
     </dependency>
     <dependency>
+      <groupId>cljs-ajax</groupId>
+      <artifactId>cljs-ajax</artifactId>
+      <version>0.8.4</version>
+    </dependency>
+    <dependency>
+      <groupId>metosin</groupId>
+      <artifactId>reitit</artifactId>
+      <version>0.5.15</version>
+    </dependency>
+    <dependency>
+      <groupId>pez</groupId>
+      <artifactId>clerk</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>medley</groupId>
+      <artifactId>medley</artifactId>
+      <version>1.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>venantius</groupId>
+      <artifactId>accountant</artifactId>
+      <version>0.2.5</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.itarck</groupId>
       <artifactId>fancoil</artifactId>
-      <version>0.0.2-SNAPSHOT</version>
+      <version>0.0.6-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

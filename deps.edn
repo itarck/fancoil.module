@@ -12,7 +12,7 @@
   pez/clerk {:mvn/version "1.0.0"}
   medley/medley {:mvn/version "1.3.0"}
   venantius/accountant {:mvn/version "0.2.5"}
-  com.github.itarck/fancoil {:mvn/version "0.0.4-SNAPSHOT"}}
+  com.github.itarck/fancoil {:mvn/version "0.0.6-SNAPSHOT"}}
  
  :paths ["src/main" "src/test"]}
 

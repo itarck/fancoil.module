@@ -17,11 +17,11 @@ Modules for fancoil framework. Modules will be changed more than the framework, 
 
 Leiningen/Boot
 
-    [com.github.itarck/fancoil.module "0.0.3-SNAPSHOT"]
+    [com.github.itarck/fancoil.module "0.0.5-SNAPSHOT"]
 
 Clojure CLI/deps.edn
 
-    com.github.itarck/fancoil.module {:mvn/version "0.0.3-SNAPSHOT"}
+    com.github.itarck/fancoil.module {:mvn/version "0.0.5-SNAPSHOT"}
 
 
 ## How to Use
