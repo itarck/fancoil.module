@@ -12,7 +12,7 @@
 ;; Routes
 
 
-(defmethod ig/init-key :reitit/html-router
+(defmethod ig/init-key :fancoil.module.reitit/html-router
   [_ {:keys [routes dispatch on-navigate-request]}]
   (let [reitit-router (rfront/router routes)
         router-atom (r/atom {})

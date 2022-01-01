@@ -8,30 +8,31 @@
 
 ;; plugin 
 
-(defmethod router.base/html-router :router/navigate-path
+(defmethod router.base/html-router :navigate-to
   [core _ path]
   (accountant/navigate! path))
 
-(defmethod router.base/html-router :router/path-for
+(defmethod router.base/html-router :path-for
   [core _ page-name & [params]]
   (let [reitit-router (:reitit-router core)]
     (if params
       (:path (rfront/match-by-name reitit-router page-name params))
       (:path (rfront/match-by-name reitit-router page-name)))))
 
-(defmethod router.base/html-router :router/current-route-atom
+(defmethod router.base/html-router :current-route-atom
   [core _ _]
   (r/cursor (:router-atom core) [:current-route]))
 
 
 ;; plugin for fancoil
 
-(defmethod fancoil.base/inject :reitit.html-router/route
+
+(defmethod fancoil.base/inject :router/route
   [{:keys [router]} _ request]
   (let [current-route @(router :current-route-atom)]
     (assoc request :router/route current-route)))
 
-(defmethod fancoil.base/do! :reitit.html-router/navigate
+(defmethod fancoil.base/do! :router/navigate
   [{:keys [router]} _ {:keys [page-name params]}]
   (let [path (router :path-for page-name params)]
     (accountant/navigate! path)))
