@@ -72,7 +72,9 @@
 (defmethod base/do! :ajax/easy-request
   [core method effect]
   (go
-    (let [{:keys [uri opt on-success on-failure] :or {opt {} on-failure #(js/console.error %)}} effect
+    (let [{:keys [uri opt on-success on-failure] 
+           :or {opt {} on-failure #(js/console.error %)}
+           on-finally :finally} effect
           on-success-handler (cond
                                (fn? on-success) on-success
                                (keyword? on-success) (make-handler-from-keyword core on-success)
@@ -87,9 +89,19 @@
                                (vector? on-failure) (make-handler-from-requests core on-failure)
                                (nil? on-failure) (js/console.error "You should add a on-success dispatch keyword for :ajax/request")
                                :else (js/console.error "on-failure should be a keyword"))
-          opt (assoc opt
-                     :handler on-success-handler
-                     :error-handler on-failure-handler)]
+          on-finally-handler (cond
+                               (fn? on-finally) on-finally
+                               (keyword? on-finally) #(let [req {:request/method on-finally}]
+                                                       (base/do! core :dispatch/request req))
+                               (map? on-finally) #(base/do! core :dispatch/request on-finally)
+                               :else nil)
+          opt (-> opt
+                  (assoc :handler on-success-handler
+                         :error-handler on-failure-handler)
+                  ((fn [opt]
+                    (if on-finally-handler
+                      (assoc opt :finally on-finally-handler)
+                      opt))))]
       (case method
         :ajax/get (GET uri opt)
         :ajax/post (POST uri opt)
