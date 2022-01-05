@@ -21,15 +21,24 @@ Modules for fancoil framework. Modules will be changed more than the framework, 
 
 Leiningen/Boot
 
-    [com.github.itarck/fancoil.module "0.0.5-SNAPSHOT"]
+    [com.github.itarck/fancoil.module "0.0.6-SNAPSHOT"]
 
 Clojure CLI/deps.edn
 
-    com.github.itarck/fancoil.module {:mvn/version "0.0.5-SNAPSHOT"}
+    com.github.itarck/fancoil.module {:mvn/version "0.0.6-SNAPSHOT"}
 
 
 ## How to Use
 
-Here is a [todomvc example] to use poshed datascript
+You can find some examples in [fancoil-example] repo for reference
 
-[todomvc example]:https://github.com/itarck/fancoil-example/tree/main/todomvc-datascript
+- [simple-html-router]: use fancoil.module.reitit/html-router
+- [todomvc-posh]: use fancoil.module.posh
+- [catchat-full]: use fancoil.module.datascript, fancoil.module.cljs-ajax
+- [realworld-demo]: use fancoil.module.cljs-ajax, fancoil.module.reitit/html-router
+
+[fancoil-example]:https://github.com/itarck/fancoil-example
+[simple-html-router]:https://github.com/itarck/fancoil-example/tree/main/simple_html_router
+[todomvc-posh]:https://github.com/itarck/fancoil-example/tree/main/todomvc-posh
+[catchat-full]:https://github.com/itarck/fancoil-example/tree/main/catchat-full
+[realworld-demo]:https://github.com/itarck/fancoil-example/tree/main/realworld
