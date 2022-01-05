@@ -8,7 +8,7 @@
 
 ;; plugin 
 
-(defmethod router.base/html-router :navigate-to
+(defmethod router.base/html-router :navigate
   [core _ path]
   (accountant/navigate! path))
 
