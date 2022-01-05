@@ -6,12 +6,16 @@ Modules for fancoil framework. Modules will be changed more than the framework, 
 
 - fancoil.module.datascript：[datascript],  an alternative to ratom
 - fancoil.module.posh：poshed datascript，you can use [posh] in subscribe
-- fancoil.module.cljs-ajax: a wrap for [cljs-ajax], add it as plugin for fancoil unit do!
-- fancoil.module.reitit.html-router: a frontend router module
+- fancoil.module.cljs-ajax: a wrap for [cljs-ajax], as plugin of fancoil unit do!
+- fancoil.module.reitit.html-router: a [reitit] frontend router, already integranted with [accountant] and [clerk], originally from [reagent-template]
 
 [posh]:https://github.com/denistakeda/posh
 [datascript]:https://github.com/tonsky/datascript
 [cljs-ajax]:https://github.com/JulianBirch/cljs-ajax
+[reitit]:https://github.com/metosin/reitit
+[clerk]:https://github.com/PEZ/clerk
+[accountant]:https://github.com/venantius/accountant
+[reagent-template]:https://github.com/reagent-project/reagent-template
 
 ## Installation
 
