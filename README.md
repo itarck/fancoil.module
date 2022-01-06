@@ -31,8 +31,9 @@ Clojure CLI/deps.edn
 ## How to Use
 
 You can find some examples in [fancoil-example] repo for reference
-
+- [simple]: basic example
 - [simple-html-router]: use fancoil.module.reitit/html-router
+- [todomvc-ratom]: basic todomvc example, use ratom
 - [todomvc-posh]: use fancoil.module.posh
 - [catchat-full]: use fancoil.module.datascript, fancoil.module.cljs-ajax
 - [realworld-demo]: use fancoil.module.cljs-ajax, fancoil.module.reitit/html-router
@@ -42,3 +43,5 @@ You can find some examples in [fancoil-example] repo for reference
 [todomvc-posh]:https://github.com/itarck/fancoil-example/tree/main/todomvc-posh
 [catchat-full]:https://github.com/itarck/fancoil-example/tree/main/catchat-full
 [realworld-demo]:https://github.com/itarck/fancoil-example/tree/main/realworld
+[simple]:https://github.com/itarck/fancoil-example/tree/main/simple
+[todomvc-ratom]:https://github.com/itarck/fancoil-example/tree/main/todomvc-ratom
